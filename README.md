@@ -1,70 +1,103 @@
-# Getting Started with Create React App
+# React Firebase User CRUD (Frontend)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project is a frontend application built with **React + TypeScript** that interacts with a RESTful API to manage users. The backend uses **Firebase Realtime Database** to store user data and fetches **geolocation (latitude, longitude, timezone)** from the **OpenWeatherMap API** based on the user's zip code.
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## Features
 
-### `npm start`
+- Display a list of users
+- Create new users by name and zip code
+- Edit existing users
+- Delete users
+- Automatically fetch latitude, longitude, and timezone from the zip code
+- Real-time UI updates after every operation
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+---
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## 🔗 Technologies Used
 
-### `npm test`
+- React
+- TypeScript
+- Fetch API (for backend integration)
+- Firebase Realtime Database (handled by the backend)
+- OpenWeatherMap API (handled by the backend)
+- Express backend (not included here, but required)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+---
 
-### `npm run build`
+## How to Run
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+1. Install dependencies:
+   ```bash
+   npm install
+   ```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+2. Start the development server:
+   ```bash
+   npm start
+   ```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+3. Open your browser at:
+   ```
+   http://localhost:3000
+   ```
 
-### `npm run eject`
+---
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Backend API Configuration
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+In the file `src/api.ts`, set the base URL of your API:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+```ts
+const API_URL = "https://your-api-url.com"; // or http://localhost:8080
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Your backend must expose the following endpoints:
 
-## Learn More
+| Method | Endpoint     | Description             |
+| ------ | ------------ | ----------------------- |
+| GET    | `/users`     | List all users          |
+| POST   | `/users`     | Create a new user       |
+| PUT    | `/users/:id` | Update an existing user |
+| DELETE | `/users/:id` | Delete a user           |
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+> On creation, the backend fetches the geolocation using OpenWeatherMap based on the provided zip code.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+---
 
-### Code Splitting
+## Example: POST `/users`
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+### Request Body:
+```json
+{
+  "name": "John Doe",
+  "zipCode": "10001"
+}
+```
 
-### Analyzing the Bundle Size
+### Backend Behavior:
+- Uses OpenWeatherMap to get `latitude`, `longitude`, and `timezoneOffset`
+- Stores the full user object in Firebase Realtime Database
+- Returns the created user
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+---
 
-### Making a Progressive Web App
+## UI Overview
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+- A form with two inputs: **Name** and **Zip Code**
+- A data grid displaying:
+  - Name
+  - Zip Code
+  - Latitude
+  - Longitude
+  - Timezone Offset
+  - Edit/Delete actions
 
-### Advanced Configuration
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+## Ideal For
 
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- Demonstrating full CRUD flow with React and a REST API
+- Learning to integrate frontend and backend cleanly
+- Exploring real-time data sync with Firebase (via backend)
